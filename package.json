@@ -7,7 +7,7 @@
     "db:generate": "npx prisma generate",
     "build": "npx esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "dev": "npx tsc -b && node dist/index.js",
-    "start": "npx run db:generate && node dist/index.js"
+    "start": "npm run db:generate && node dist/index.js"
   },
   "keywords": [],
   "author": "",
