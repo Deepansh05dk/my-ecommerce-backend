@@ -18,6 +18,8 @@ exports.paymentRouter.post("/success", (req, res, next) => __awaiter(void 0, voi
     try {
         const { session_id } = req.body;
         const session = yield stripe_1.stripe.checkout.sessions.retrieve(session_id);
+        if (session.payment_status === 'unpaid')
+            return res.json({ message: 'Invalid request' });
         const metadata = session.metadata;
         if (metadata) {
             const order = yield db_1.db.order.update({
@@ -50,6 +52,8 @@ exports.paymentRouter.post("/cancelled", (req, res, next) => __awaiter(void 0, v
     try {
         const { session_id } = req.body;
         const session = yield stripe_1.stripe.checkout.sessions.retrieve(session_id);
+        if (session.payment_status === 'paid')
+            return res.json({ message: 'Invalid request' });
         const metadata = session.metadata;
         if (metadata) {
             const order = yield db_1.db.order.update({

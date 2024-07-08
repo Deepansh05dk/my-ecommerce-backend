@@ -16,7 +16,7 @@ const db_1 = require("../../../utils/db");
 exports.checkoutRouter = (0, express_1.Router)();
 exports.checkoutRouter.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productIds, total } = req.body;
+        const { productIds } = req.body;
         if (!productIds || productIds.length === 0) {
             throw new Error("Product ids are required");
         }
@@ -27,6 +27,7 @@ exports.checkoutRouter.post("/", (req, res, next) => __awaiter(void 0, void 0, v
                 },
             },
         });
+        const total = products.reduce((total, item) => Number(item.price) + total, 0);
         const line_items = [];
         products.forEach((product) => {
             line_items.push({

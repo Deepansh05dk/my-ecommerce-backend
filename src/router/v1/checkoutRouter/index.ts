@@ -7,7 +7,7 @@ export const checkoutRouter = Router();
 
 checkoutRouter.post("/", async (req, res, next) => {
   try {
-    const { productIds, total } = req.body;
+    const { productIds } = req.body;
     if (!productIds || productIds.length === 0) {
       throw new Error("Product ids are required");
     }
@@ -18,6 +18,7 @@ checkoutRouter.post("/", async (req, res, next) => {
         },
       },
     });
+    const total = products.reduce((total, item) => Number(item.price) + total, 0)
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
     products.forEach((product) => {
       line_items.push({

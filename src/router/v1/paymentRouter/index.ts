@@ -7,6 +7,7 @@ paymentRouter.post("/success", async (req, res, next) => {
   try {
     const { session_id } = req.body;
     const session = await stripe.checkout.sessions.retrieve(session_id);
+    if (session.payment_status === 'unpaid') return res.json({ message: 'Invalid request' })
     const metadata = session.metadata;
 
     if (metadata) {
@@ -40,6 +41,7 @@ paymentRouter.post("/cancelled", async (req, res, next) => {
   try {
     const { session_id } = req.body;
     const session = await stripe.checkout.sessions.retrieve(session_id);
+    if (session.payment_status === 'paid') return res.json({ message: 'Invalid request' })
     const metadata = session.metadata;
     if (metadata) {
       const order = await db.order.update({

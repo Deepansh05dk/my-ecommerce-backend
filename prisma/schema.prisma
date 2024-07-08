@@ -46,6 +46,14 @@ model Order {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   items     Product[]
+  payment   Payment?
+}
+
+model Payment {
+  id        String @id @default(uuid())
+  orderId   Int    @unique
+  order     Order  @relation(fields: [orderId], references: [id])
+  sessionId String
 }
 
 // enum Role {

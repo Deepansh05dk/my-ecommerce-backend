@@ -23,3 +23,20 @@ exports.productRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, voi
         next(err);
     }
 }));
+exports.productRouter.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { data } = JSON.parse(req.body);
+        console.log(data);
+        const products = yield db_1.db.product.findMany({
+            where: {
+                id: {
+                    in: data
+                }
+            }
+        });
+        res.json(products);
+    }
+    catch (err) {
+        res.json([]);
+    }
+}));

@@ -13,3 +13,22 @@ productRouter.get("/", async (req, res, next) => {
     next(err);
   }
 });
+
+
+productRouter.post("/", async (req, res, next) => {
+  try {
+    const { data } = JSON.parse(req.body)
+    console.log(data)
+    const products = await db.product.findMany({
+      where: {
+        id: {
+          in: data
+        }
+      }
+    }
+    );
+    res.json(products);
+  } catch (err) {
+    res.json([])
+  }
+});
